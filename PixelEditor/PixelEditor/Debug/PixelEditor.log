@@ -1,0 +1,141 @@
+﻿  Agent.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\agent.cpp(148): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\agent.cpp(151): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Collision.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\collision.cpp(72): warning C4018: '<': signed/unsigned mismatch
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\collision.cpp(74): warning C4018: '<': signed/unsigned mismatch
+  Demo.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(129): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(376): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(377): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(428): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(466): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(467): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(505): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(542): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\demo.cpp(49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(170): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(167): note: while compiling class template member function 'void PixelWindow::Button<PixelWindow::TickBox>::Update(void)'
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(231): note: see reference to class template instantiation 'PixelWindow::Button<PixelWindow::TickBox>' being compiled
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(173): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  EditableBlock.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(150): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(151): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(568): warning C4552: '-': result of expression not used
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(570): warning C4552: '+': result of expression not used
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(572): warning C4552: '-': result of expression not used
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(574): warning C4552: '+': result of expression not used
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(728): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(729): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(734): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  GameObject.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(86): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(97): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(173): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(174): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(185): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(186): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(187): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(188): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\gameobject.cpp(294): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Grid.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(45): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(57): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(91): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(92): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(94): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(95): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(110): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(111): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(113): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(114): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(125): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(126): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\grid.cpp(200): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  PixelGameEditor.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(129): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(376): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(377): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(428): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(466): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(467): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(505): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(542): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(31): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(32): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(37): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(38): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(50): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(256): warning C4244: '=': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(261): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(268): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(279): warning C4244: '=': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(284): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(291): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(328): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(340): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(343): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(382): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(436): warning C4244: 'initializing': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(437): warning C4244: 'initializing': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(496): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(600): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(613): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(614): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(615): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(616): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(170): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(167): note: while compiling class template member function 'void PixelWindow::Button<PixelGameEditor>::Update(void)'
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelgameeditor.cpp(526): note: see reference to class template instantiation 'PixelWindow::Button<PixelGameEditor>' being compiled
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(173): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  PixelWindow.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(129): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(326): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(329): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(376): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(377): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(428): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(466): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(467): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(505): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(542): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(50): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(82): warning C4244: 'initializing': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(83): warning C4244: 'initializing': conversion from 'int32_t' to 'float', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(90): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(89): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(88): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.cpp(154): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(170): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(167): note: while compiling class template member function 'void PixelWindow::Button<PixelWindow::TickBox>::Update(void)'
+  e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(231): note: see reference to class template instantiation 'PixelWindow::Button<PixelWindow::TickBox>' being compiled
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(173): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'uint32_t', possible loss of data
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\pixelwindow.h(178): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  Player.cpp
+  ProjectileManager.cpp
+  World.cpp
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\world.cpp(57): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+e:\rafal\projects\pixelgameeditor\pixeleditor\pixeleditor\editableblock.cpp(309): warning C4715: 'EditableBlock::GetSplitLineDirection': not all control paths return a value
+  PixelEditor.vcxproj -> E:\Rafal\Projects\PixelGameEditor\PixelEditor\Debug\PixelEditor.exe
