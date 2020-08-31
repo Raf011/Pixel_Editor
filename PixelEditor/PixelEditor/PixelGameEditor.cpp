@@ -86,6 +86,19 @@ bool PixelGameEditor::OnEditorTick(float & fElapsedTime)
 		grid2D->UpdateGrid();
 	}
 
+	//Is Simulating
+	else
+	{
+		//On Simulate
+		if (!beganPlay)
+		{
+			OnBeginPlay();
+			beganPlay = true;
+		}
+
+		OnTick();
+	}
+
 	return true;
 }
 
@@ -106,7 +119,6 @@ bool PixelGameEditor::OnUpdate(float & fElapsedTime)
 	DrawGrid();
 	DrawGameObjects(fElapsedTime);
 	Collision::GetInstance()->Update();
-
 	return true;
 }
 

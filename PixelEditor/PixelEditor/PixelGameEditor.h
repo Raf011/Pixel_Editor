@@ -28,6 +28,7 @@ private:
 	int32_t mouseY = 0;
 	olc::Sprite* rotationSprite;
 	olc::Decal*  rotationDecal;
+	bool beganPlay = false;
 
 	float initialCamSpeed = 0.0f;
 
@@ -46,6 +47,11 @@ public:
 	bool OnEditorTick(float &fElapsedTime);
 	bool OnCreate();
 	bool OnUpdate(float &fElapsedTime);
+
+	//Fires once when simulation starts
+	virtual bool OnBeginPlay() { return false; };
+	//Fires each frame after simulation starts
+	virtual bool OnTick() { return false; };
 
 protected:
 	unsigned int GetCurrentFrame() { return Frame; }

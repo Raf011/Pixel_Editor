@@ -16,7 +16,7 @@
 class Demo : public PixelGameEditor
 {
 	GameObject* player = new Player();
-	GameObject* agent = new Agent();
+	Agent* agent = new Agent();
 	GameObject* editableBlock = new EditableBlock({ 925.f, 75.f });
 
 public:
@@ -31,11 +31,12 @@ public:
 
 	void DebugSpawnAgent()
 	{
-		GameObject* agentSpawned = new Agent();
+		Agent* agentSpawned = new Agent();
 		agentSpawned->SetPosition(0, 0);
 		agentSpawned->EnableDrawCollision(true);
 		agentSpawned->EnableDrawTaskFullDebug(true);
 		agentSpawned->Init();
+		agentSpawned->FollowTarget(player);
 	}
 
 public:
@@ -47,10 +48,11 @@ public:
 		agent->EnableDrawCollision(true);
 		agent->EnableDrawTaskFullDebug(true);
 		agent->SetPosition( 800.f, 500.f );
+		//Make agent move to the target here
+		//agent->MoveTo(player->GetPosition());
 
 		return true;
 	}
-
 
 	//typedef void(*funcP)();
 	void test() { std::cout << "DELAY TEST\n"; }
@@ -87,6 +89,19 @@ public:
 
 		return true;
 	}
+
+	bool OnBeginPlay() override
+	{
+		//Make agent move to the target here
+		//agent->MoveTo(player->GetPosition());
+		agent->FleeTarget(player);
+		return true;
+	}
+
+	//bool OnTick() override
+	//{
+	//return true;
+	//}
 
 	/////////////////////////////////////////////////////////////////////////
 };

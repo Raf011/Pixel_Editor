@@ -19,33 +19,46 @@ void Agent::OnBeginPlay()
 	//bShowDebug = bDrawTasksFullDebug;
 }
 
-void Agent::Update(float & fElapsedTime)
+void Agent::Update(float &fElapsedTime)
 {
-	if(isAlive())
+	if(shouldMove && isAlive() && target != GetPosition())
 	{
-		target = world->GetGameObjectsSpawnedInTheWorld().at(0)->GetPosition(); // Player
+		//target = world->GetGameObjectsSpawnedInTheWorld().at(0)->GetPosition(); // Player
 
-		PixelMath::Vec2D arrive = Arrive(target, fElapsedTime);
-		//arrive = Seek(target);
-		ApplyForce(arrive);
+		//force = Arrive(target, fElapsedTime);
+		//force = Seek(target);
+		//force = Flee(target);
+		//force = Pursuit(target);
 
-		float rotation = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f);
-		SetRotation(rotation);
+		SetForceBasedOnState(fElapsedTime);
 
-		velocity += acceleration;
-		transform.Position = transform.Position + velocity;
-
-		if (bDrawTasksFullDebug)
+		if(shouldMove)
 		{
-			engine->DrawString(10, 5, "Position = X: " + std::to_string(transform.Position.X) + "Y:" + std::to_string(transform.Position.Y), olc::RED);
-			engine->DrawString(10, 35, "Acceleration = X(" + std::to_string(acceleration.X) +
-				"), Y(" + std::to_string(acceleration.Y) + ")", olc::YELLOW);
-						
-			DrawDirectionalVectors();
+			ApplyForce(force);
+
+			//Rotation
+			if(faceTheTarget)
+			{
+				float rotation = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f);
+				SetRotation(rotation);
+			}
+
+			velocity += acceleration;
+			transform.Position = transform.Position + velocity;	
 		}
 
+		//Debug
+		if (bDrawTasksFullDebug)
+		{
+			DrawDebugText();
+			DrawDirectionalVectors();
+			nextDebugLine = 5;
+		}
+
+		//Reset Values
 		Heading = velocity;
-		acceleration = {0.0f, 0.0f};
+		acceleration.ZeroOut();
+		force.ZeroOut();
 	}
 }
 
@@ -60,7 +73,7 @@ PixelMath::Vec2D Agent::Flee(PixelMath::Vec2D TargetPos)
 	const double panicDistanceSq = 200.0 * 200.0;
 	const double distanceSq = (double)PixelMath::Functions::MagSqr(GetPosition() - target);
 
-	engine->DrawString(10, 131, "panicDistanceSq(" + std::to_string(panicDistanceSq) +
+	engine->DrawString(10, GetNextDebugLine(), "panicDistanceSq(" + std::to_string(panicDistanceSq) +
 		"), distanceSq(" + std::to_string(distanceSq) + ")", olc::GREEN);
 	
 	if(distanceSq > panicDistanceSq)
@@ -102,30 +115,105 @@ PixelMath::Vec2D Agent::Arrive(PixelMath::Vec2D Target, float &timeDelta)
 
 	if(bDrawTasksFullDebug)
 	{
-		engine->DrawString(10, 20, "Speed = " + std::to_string(speed), olc::YELLOW);
-		engine->DrawString(10, 50, "Velocity = X(" + std::to_string(desiredVelocity.X) +
+		engine->DrawString(10, GetNextDebugLine(), "Speed = " + std::to_string(speed), olc::YELLOW);
+		engine->DrawString(10, GetNextDebugLine(), "Velocity = X(" + std::to_string(desiredVelocity.X) +
 			"), Y(" + std::to_string(desiredVelocity.Y) + ")", olc::YELLOW);
 
-		engine->DrawString(10, 65, "Steer = X(" + std::to_string(steer.X) +
+		engine->DrawString(10, GetNextDebugLine(), "Steer = X(" + std::to_string(steer.X) +
 			"), Y(" + std::to_string(steer.Y) + ")", olc::YELLOW);
-		engine->DrawString(10, 80, "Distance To Target = " + std::to_string(distance), olc::YELLOW);
+		engine->DrawString(10, GetNextDebugLine(), "Distance To Target = " + std::to_string(distance), olc::YELLOW);
 	}
 
 	return steer;
 }
 
-PixelMath::Vec2D Agent::Pursuit(GameObject* target, float & timeDelta)
-{
-	PixelMath::Vec2D ToEvader = target->GetPosition() - GetPosition();
-
-	double RelativeHeading = (double)PixelMath::Functions::Dot(GetHeading(), target->GetHeading());
-	
-	return { 0.0f, 0.0f };
-}
+//PixelMath::Vec2D Agent::Pursuit(GameObject* target, float & timeDelta)
+//{
+//	PixelMath::Vec2D ToEvader = target->GetPosition() - GetPosition();
+//
+//	double RelativeHeading = (double)PixelMath::Functions::Dot(GetHeading(), target->GetHeading());
+//	
+//	return { 0.0f, 0.0f };
+//}
 
 void Agent::ApplyForce(PixelMath::Vec2D force)
 {
 	acceleration += force;
+}
+
+void Agent::SetForceBasedOnState(float &ElapsedTime)
+{
+	if(currentMoveState == MoveState::eNone)
+	{
+		shouldMove = false;
+		return;
+	}
+
+	if(currentMoveState == MoveState::eGoTo)
+	{
+		//are we already at the destination?
+		if(GetDistanceToTarget() < 1.0f)
+		{
+			currentMoveState = MoveState::eNone;
+			shouldMove = false;
+			return;
+		}
+
+		force = Arrive(target, ElapsedTime);
+		return;
+	}
+
+	if(currentMoveState == MoveState::eFollow)
+	{
+		target = followedEntity->GetPosition();
+		force = Arrive(target, ElapsedTime);
+		return;
+	}
+
+	if (currentMoveState == MoveState::eFlee)
+	{
+		target = followedEntity->GetPosition();
+		force = Flee(target);
+		return;
+	}
+}
+
+void Agent::MoveTo(PixelMath::Vec2D Target)
+{
+	target = Target;
+	shouldMove = true;
+	currentMoveState = MoveState::eGoTo;
+}
+
+void Agent::FollowTarget(GameObject* Target)
+{
+	if(Target)
+	{
+		followedEntity = Target;
+		target = Target->GetPosition();
+		shouldMove = true;
+		currentMoveState = MoveState::eFollow;
+	}
+	else
+		currentMoveState = MoveState::eNone;
+}
+
+void Agent::FleeTarget(GameObject * Target)
+{
+	if (Target)
+	{
+		followedEntity = Target;
+		target = Target->GetPosition();
+		shouldMove = true;
+		currentMoveState = MoveState::eFlee;
+	}
+	else
+		currentMoveState = MoveState::eNone;
+}
+
+float Agent::GetDistanceToTarget()
+{
+	return PixelMath::Functions::Mag(target - transform.Position);
 }
 
 void Agent::Limit(PixelMath::Vec2D &vec, float limit)
@@ -149,5 +237,32 @@ void Agent::DrawDirectionalVectors()
 
 	float angle = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f);
 	int angleInDegrees = std::floor(ConvertAngleToDegrees(angle));
-	engine->DrawString(10, 95, "Angle = " + std::to_string(angle) + " (" + std::to_string(angleInDegrees) + " degrees)", olc::YELLOW);
+	engine->DrawString(10, GetNextDebugLine(), "Angle = " + std::to_string(angle) + " (" + std::to_string(angleInDegrees) + " degrees)", olc::YELLOW);
+}
+
+void Agent::DrawDebugText()
+{
+	engine->DrawString(10, GetNextDebugLine(), "Position = X: " + std::to_string(transform.Position.X) + "Y:" + std::to_string(transform.Position.Y), olc::RED);
+	engine->DrawString(10, GetNextDebugLine(), "Acceleration = X(" + std::to_string(acceleration.X) +
+		"), Y(" + std::to_string(acceleration.Y) + ")", olc::YELLOW);
+
+	std::string stateTxt = "NOT_SET";
+	int32_t textPos = 45;
+
+	switch (currentMoveState)
+	{
+	case Agent::eNone: stateTxt = "NONE";
+		break;
+	case Agent::eGoTo: stateTxt = "MOVE TO"; textPos = 110;
+		break;
+	case Agent::eFollow: stateTxt = "FOLLOW"; textPos = 110;
+		break;
+	case Agent::eFlee: stateTxt = "FLEE";
+		break;
+	default:
+		break;
+	}
+
+	engine->DrawString(10, GetNextDebugLine(), "Current Task = " + stateTxt, olc::GREEN);
+
 }
