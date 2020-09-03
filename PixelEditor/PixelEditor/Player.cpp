@@ -108,3 +108,8 @@ void Player::CameraControls(float &elapsedTime)
 	SetRotation(GetRotatonToFaceTarget(transform.Position, { mouseX, mouseY }));
 
 }
+
+//void Player::OnCollide(GameObject * CollidingWith)
+//{
+//
+//}

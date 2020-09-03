@@ -8,20 +8,25 @@ public:
 	Agent();
 	~Agent();
 
-	enum FaceOptions
-	{
-		FaceNone, FaceMoveDirection, FaceTarget
-	};
+	//Moving this to use int
+	//enum FaceOptions
+	//{
+	//	FaceNone, FaceMoveDirection, FaceTarget
+	//};
 
 private:
-	int32_t nextDebugLine = 5;
+	int8_t nextDebugLine = 5;
+	uint8_t moveState{ 0b0000'0000 };
+	uint8_t faceOption{ 0b0000'0000 };
 
+	/*
 	enum MoveState
 	{
 		eNone, eGoTo, eFollow, eFlee
 	};
 
 	MoveState currentMoveState = eNone;
+	*/
 	PixelMath::Vec2D target;
 	PixelMath::Vec2D force;
 	PixelMath::Vec2D velocity;

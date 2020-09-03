@@ -17,5 +17,6 @@ private:
 	GameObject* TempAgentRef = nullptr;
 	float mouseX;
 	float mouseY;
+	//virtual void OnCollide(GameObject* CollidingWith) override;
 };
 

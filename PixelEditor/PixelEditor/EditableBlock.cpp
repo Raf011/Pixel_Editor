@@ -13,7 +13,7 @@ EditableBlock::EditableBlock(PixelMath::Vec2D position) : GameObject(position, {
 	bAllowRMBEvents = false;
 	bAllowEditorRotation = false;
 	Visible = false;
-	
+	canBeDestroyed = false;
 	// Disable collision
 	SetCollisionEnabled(false);
 
@@ -491,6 +491,7 @@ EditableBlock::Block::Block(PixelMath::Vec2D vPosition, PixelMath::Vec2D vSize, 
 	bAllowRMBEvents = false;
 	bAllowEditorRotation = false;
 	parent = eb_parent;
+	canBeDestroyed = false;
 	//bAllowDragging = false;
 }
 

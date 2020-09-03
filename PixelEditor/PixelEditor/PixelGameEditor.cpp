@@ -606,6 +606,12 @@ void PixelGameEditor::SetPixelWindows()
 	TempButton = nullptr;
 }
 
+PixelGameEditor::PixelGameEditor()
+{
+	World::Get()->Init(this); 
+	World::Get()->AddMainCamera(new Camera2D());
+}
+
 void PixelGameEditor::UpdateDebugText()
 {
 	std::string tempText;

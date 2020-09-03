@@ -43,6 +43,5 @@ public:
 	bool isSimulating() { return b_simulating; }
 	void setIsSimulating(bool simulating) { b_simulating = simulating; }
 	int debug_retunNextAvailableID() { return NextAvailableUniqueID; }
-
 };
 

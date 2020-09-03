@@ -18,7 +18,7 @@
 class PixelGameEditor : public olc::PixelGameEngine
 {
 public:
-	PixelGameEditor() { World::Get()->Init(this); World::Get()->AddMainCamera(new Camera2D()); }
+	PixelGameEditor();
 	virtual ~PixelGameEditor() {};
 
 private:

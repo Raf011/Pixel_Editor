@@ -2,10 +2,20 @@
 #include "World.h"
 
 
+#define fo_None    0b0000'0001
+#define fo_GoTo    0b0000'0010
+#define fo_Follow  0b0000'0100
+#define fo_Flee    0b0000'1000
+
+//#define Face_None           0b0000'0001
+//#define Face_MoveDirection  0b0000'0010
+//#define Face_Target         0b0000'0100
+
 Agent::Agent() : GameObject({ 0, 0 }, { 64, 64 }, "..//PixelEditor//Sprites//Agent.png")
 {
 	SetRotation(0.0f);
 	Name = "Agent";
+	//faceOption = Face_MoveDirection;
 }
 
 
@@ -21,7 +31,7 @@ void Agent::OnBeginPlay()
 
 void Agent::Update(float &fElapsedTime)
 {
-	if(shouldMove && isAlive() && target != GetPosition())
+	if(shouldMove && isAlive())
 	{
 		//target = world->GetGameObjectsSpawnedInTheWorld().at(0)->GetPosition(); // Player
 
@@ -35,15 +45,25 @@ void Agent::Update(float &fElapsedTime)
 		if(shouldMove)
 		{
 			ApplyForce(force);
+			velocity += acceleration;
+
+			//Wfloat rotation = 0.0f;
 
 			//Rotation
 			if(faceTheTarget)
 			{
+				//switch (faceOption)
+				//{
+				//	case Face_None: break;
+				//	case Face_MoveDirection:  rotation = GetRotatonToFaceTarget(transform.Position, transform.Position + velocity) - GetRotationBasedOnAngle(-90.0f); SetRotation(rotation); break;
+				//	case Face_Target: rotation = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f); SetRotation(rotation); break;
+				//	default:break;
+				//}
+				
 				float rotation = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f);
 				SetRotation(rotation);
 			}
 
-			velocity += acceleration;
 			transform.Position = transform.Position + velocity;	
 		}
 
@@ -143,18 +163,21 @@ void Agent::ApplyForce(PixelMath::Vec2D force)
 
 void Agent::SetForceBasedOnState(float &ElapsedTime)
 {
-	if(currentMoveState == MoveState::eNone)
+	//if(currentMoveState == MoveState::eNone)
+	if(moveState & fo_None)
 	{
 		shouldMove = false;
 		return;
 	}
 
-	if(currentMoveState == MoveState::eGoTo)
+	//if(currentMoveState == MoveState::eGoTo)
+	if(moveState & fo_GoTo)
 	{
 		//are we already at the destination?
 		if(GetDistanceToTarget() < 1.0f)
 		{
-			currentMoveState = MoveState::eNone;
+			//currentMoveState = MoveState::eNone;
+			moveState = fo_GoTo;
 			shouldMove = false;
 			return;
 		}
@@ -163,14 +186,16 @@ void Agent::SetForceBasedOnState(float &ElapsedTime)
 		return;
 	}
 
-	if(currentMoveState == MoveState::eFollow)
+	//if(currentMoveState == MoveState::eFollow)
+	if(moveState & fo_Follow)
 	{
 		target = followedEntity->GetPosition();
 		force = Arrive(target, ElapsedTime);
 		return;
 	}
 
-	if (currentMoveState == MoveState::eFlee)
+	//if (currentMoveState == MoveState::eFlee)
+	if (moveState & fo_Flee)
 	{
 		target = followedEntity->GetPosition();
 		force = Flee(target);
@@ -182,7 +207,8 @@ void Agent::MoveTo(PixelMath::Vec2D Target)
 {
 	target = Target;
 	shouldMove = true;
-	currentMoveState = MoveState::eGoTo;
+	//currentMoveState = MoveState::eGoTo;
+	moveState = fo_GoTo;
 }
 
 void Agent::FollowTarget(GameObject* Target)
@@ -192,10 +218,12 @@ void Agent::FollowTarget(GameObject* Target)
 		followedEntity = Target;
 		target = Target->GetPosition();
 		shouldMove = true;
-		currentMoveState = MoveState::eFollow;
+		//currentMoveState = MoveState::eFollow;
+		moveState = fo_Follow;
 	}
 	else
-		currentMoveState = MoveState::eNone;
+		moveState = fo_None;
+		//currentMoveState = MoveState::eNone;
 }
 
 void Agent::FleeTarget(GameObject * Target)
@@ -205,10 +233,12 @@ void Agent::FleeTarget(GameObject * Target)
 		followedEntity = Target;
 		target = Target->GetPosition();
 		shouldMove = true;
-		currentMoveState = MoveState::eFlee;
+		//currentMoveState = MoveState::eFlee;
+		moveState = fo_Flee;
 	}
 	else
-		currentMoveState = MoveState::eNone;
+		moveState = fo_None;
+		//currentMoveState = MoveState::eNone;
 }
 
 float Agent::GetDistanceToTarget()
@@ -249,15 +279,29 @@ void Agent::DrawDebugText()
 	std::string stateTxt = "NOT_SET";
 	int32_t textPos = 45;
 
-	switch (currentMoveState)
+	//switch (currentMoveState)
+	//{
+	//case Agent::eNone: stateTxt = "NONE";
+	//	break;
+	//case Agent::eGoTo: stateTxt = "MOVE TO"; textPos = 110;
+	//	break;
+	//case Agent::eFollow: stateTxt = "FOLLOW"; textPos = 110;
+	//	break;
+	//case Agent::eFlee: stateTxt = "FLEE";
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	switch (moveState)
 	{
-	case Agent::eNone: stateTxt = "NONE";
+	case fo_None: stateTxt = "NONE";
 		break;
-	case Agent::eGoTo: stateTxt = "MOVE TO"; textPos = 110;
+	case fo_GoTo: stateTxt = "MOVE TO"; textPos = 110;
 		break;
-	case Agent::eFollow: stateTxt = "FOLLOW"; textPos = 110;
+	case fo_Follow: stateTxt = "FOLLOW"; textPos = 110;
 		break;
-	case Agent::eFlee: stateTxt = "FLEE";
+	case fo_Flee: stateTxt = "FLEE";
 		break;
 	default:
 		break;
