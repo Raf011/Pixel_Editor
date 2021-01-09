@@ -43,6 +43,66 @@ namespace time_functions
 			}
 		}
 
+		// Delay that takes a lambda func
+		template <class funcType>
+		void Delay(TimeType timeType, long long delay, std::function<funcType()>lambdaFuncToCall)
+		{
+			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
+
+			// convert from microseconds
+			switch (timeType)
+			{
+			case ms: delay = delay * 1000; break;
+			case s: delay = delay * 1000000; break;
+			case min: delay = delay * 60000000;	break;
+			default: break;
+			}
+
+			while (true)
+			{
+				auto timeNow = std::chrono::high_resolution_clock::now();
+
+				auto whenStarted = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
+				auto now = std::chrono::time_point_cast<std::chrono::microseconds>(timeNow).time_since_epoch().count();
+
+				if (whenStarted + delay < now)
+				{
+					lambdaFuncToCall();
+					return; // break from the loop
+				}
+			}
+		}
+
+		// Delay that takes a func ptr with argument pack
+		template <class ObjectType, class FunctionType, typename ...ArgType, typename ...Args>
+		void Delay(TimeType timeType, long long delay, ObjectType* obj, FunctionType(ObjectType::*func)(ArgType... type), Args... args)
+		{
+			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
+
+			// convert from microseconds
+			switch (timeType)
+			{
+			case ms: delay = delay * 1000; break;
+			case s: delay = delay * 1000000; break;
+			case min: delay = delay * 60000000;	break;
+			default: break;
+			}
+
+			while (true)
+			{
+				auto timeNow = std::chrono::high_resolution_clock::now();
+
+				auto whenStarted = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
+				auto now = std::chrono::time_point_cast<std::chrono::microseconds>(timeNow).time_since_epoch().count();
+
+				if (whenStarted + delay < now)
+				{
+					((*obj).*(func))(&args...);
+					return; // break from the loop
+				}
+			}
+		}
+
 		// Delay without arguments in function called
 		template <class objectType, class funcType>
 		void Delay(TimeType timeType, long long delay, objectType* object, funcType(objectType::*func)())

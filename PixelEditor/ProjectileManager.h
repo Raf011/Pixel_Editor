@@ -14,7 +14,6 @@ private:
 
 public:
 	static ProjectileManager* Get();
-	void SpawnProjectile(GameObject* owner, PixelMath::Vec2D position, PixelMath::Vec2D scale, PixelMath::Vec2D direction = { 1.0f, 0.0f }, float speed = 1.0f, float damage = 1.0f, int lifeSpan = 500, bool stopAtTarget = false, olc::Pixel tint = olc::WHITE);
 	void Update(float fDeltaTime);
 
 private:
@@ -35,6 +34,13 @@ private:
 		PixelMath::Vec2D vVelocity;
 		PixelMath::Vec2D vDirection;
 		PixelMath::Vec2D vDesiredDirection;
+
+	private:
+		bool bCanBounce = false;
+		GameObject* lastObjectProjectileCollidedWith = nullptr;
+
+	public:
+		void SetCanBounce(bool canBounce) { bCanBounce = canBounce; }
 	};
 
 	std::vector<Projectile*> projectilesSpawned;
@@ -46,5 +52,6 @@ private:
 
 public:
 	void DestroyProjectile(Projectile* object);
+	Projectile* SpawnProjectile(GameObject* owner, PixelMath::Vec2D position, PixelMath::Vec2D scale, PixelMath::Vec2D direction = { 1.0f, 0.0f }, float speed = 1.0f, float damage = 1.0f, int lifeSpan = 500, bool stopAtTarget = false, olc::Pixel tint = olc::WHITE);
 };
 

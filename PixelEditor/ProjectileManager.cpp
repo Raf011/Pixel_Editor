@@ -17,15 +17,17 @@ ProjectileManager * ProjectileManager::Get()
 	return &instance;
 }
 
-void ProjectileManager::SpawnProjectile(GameObject* owner, PixelMath::Vec2D position, PixelMath::Vec2D scale, PixelMath::Vec2D direction, float speed, float damage, int lifeSpan, bool stopAtTarget, olc::Pixel tint)
+ProjectileManager::Projectile* ProjectileManager::SpawnProjectile(GameObject* owner, PixelMath::Vec2D position, PixelMath::Vec2D scale, PixelMath::Vec2D direction, float speed, float damage, int lifeSpan, bool stopAtTarget, olc::Pixel tint)
 {
-	if (speed < 0.001f) return; // Don't spawn if the speed is too low
+	if (speed < 0.001f) return nullptr; // Don't spawn if the speed is too low
 
 	std::string pName = "Projectile(" + std::to_string(projectilesSpawned.size()) + ")";
 	Projectile* tempProj = new Projectile(pName, owner, position, scale, direction, speed, damage, lifeSpan, stopAtTarget, tint);
 	tempProj->Init();
 
 	projectilesSpawned.emplace_back(tempProj);
+
+	return tempProj;
 }
 
 void ProjectileManager::Update(float fDeltaTime)
@@ -48,6 +50,9 @@ void ProjectileManager::Update(float fDeltaTime)
 			else
 				DestroyProjectile(projectile);
 		}
+
+		else
+			DestroyProjectile(projectile);
 	}
 }
 
@@ -126,6 +131,11 @@ void ProjectileManager::Limit(PixelMath::Vec2D & vec, float limit)
 
 void ProjectileManager::DestroyProjectile(Projectile* object)
 {
+	if (!object)
+	{
+		std::cout << "Projectile Was Null!";
+	}
+
 	int index = GetIndexOfAProjectile(object);
 	if(index > -1)
 	{
@@ -158,14 +168,31 @@ ProjectileManager::Projectile::~Projectile()
 
 void ProjectileManager::Projectile::OnCollide(GameObject * CollidingWith)
 {
-	Projectile* test = nullptr;
+	if (CollidingWith == lastObjectProjectileCollidedWith) { return;  }
+	if (!CollidingWith || CollidingWith == this) { return; } //if colliding with itself;
+	if (CollidingWith == dynamic_cast<Projectile*>(CollidingWith)) { return; } //if it's not another projectile
 
-	if(CollidingWith) 
-		test = dynamic_cast<Projectile*>(CollidingWith);
-
-	if(CollidingWith != Owner && isAlive() && CollidingWith != this && !test)
+	if(CollidingWith != Owner && isAlive() && CollidingWith != this)
 	{
-		CollidingWith->Damage(fDamage);
-		Get()->DestroyProjectile(this);
+		if(CollidingWith->GetCanBeDestroyed())
+		{
+			CollidingWith->Damage(fDamage);
+		}
+
+		if(bCanBounce)
+		{
+			vDesiredDirection = { -vDesiredDirection.X, -vDesiredDirection.Y };
+			fSpeed -= 0.3f;
+		}
+
+		else
+		{
+			if(canBeDestroyed)
+			{
+				Get()->DestroyProjectile(this);
+			}
+		}
 	}
+
+	lastObjectProjectileCollidedWith = CollidingWith;
 }

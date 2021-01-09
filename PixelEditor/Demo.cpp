@@ -11,10 +11,13 @@
 #include "Collision.h"
 #include "EditableBlock.h"
 #include "TestEntity.h"
+#include <cstdio> // printf
 //#include "box2d/box2d.h"
 
 #define collisionManager Collision::GetInstance()
 #define zombieSprite "..//PixelEditor//Sprites//Zombie.png"
+
+#define sec time_functions::s
 
 class Demo : public PixelGameEditor
 {
@@ -47,9 +50,9 @@ public:
 	{
 		Agent* agentSpawned = new Agent();
 		agentSpawned->SetPosition(0, 0);
-		agentSpawned->EnableDrawCollision(true);
-		agentSpawned->EnableDrawTaskFullDebug(true);
-		agentSpawned->Init();
+		//agentSpawned->EnableDrawCollision(true);
+		//agentSpawned->EnableDrawTaskFullDebug(true);
+		//agentSpawned->Init(); // Not Needed as we are changing the sprite which inits the decal
 		agentSpawned->FollowTarget(player);
 
 		//Cosmetic Options
@@ -81,6 +84,7 @@ public:
 		FloorBlock->SetSpriteSizeToObjectSize();
 		FloorBlock->SetCollisionEnabled(false);
 		FloorBlock->bAllowDragging = false;
+		FloorBlock->bAllowEditorRotation = false;
 
 		return true;
 	}
@@ -133,6 +137,7 @@ public:
 		//std::thread([this] { time_functions::delays::Delay<Agent, void, GameObject*>(time_functions::s, 10, agent, &Agent::FollowTarget, player); }).detach(); //also works (version 3)
 
 		GameWorld->DestroyGameObject(testEntity);
+		SetCanDrawGrid(false);
 
 		return true;
 	}
@@ -151,15 +156,30 @@ public:
 		box2dTestObject->AddPhysicsComponent(0.1f);
 		box2dTestObject2->AddPhysicsComponent(0.1f);
 		box2dTestObject3->AddPhysicsComponent(2.0f);
+
+		box2dTestObject->SetCanBeDetroyed(false);
+		//box2dTestObject2->SetCanBeDetroyed(false);
+		box2dTestObject2->SetHealth(1000.0f);
+		//box2dTestObject3->SetCanBeDetroyed(false);
+
 		player->AddPhysicsComponent();
 		player->OverridePhysicsBodyPosition(true);
 
 		//box2dTestObject->Physics_ChangeDensity(0.02f);
 	}
 
+	void FUNCTYPETEST(const char** txt, int *number) { printf("\n #THIS IS A FUNC PTR TEST - %s \" = %i \"# \n", *txt, *number); }
+
 	void DelayTest(long long delayInSec = 5) // To be used in thread
 	{
+		//func ptr that takes one argument
 		time_functions::delays::Delay<Agent, void, GameObject*>(time_functions::s, delayInSec, agent, &Agent::FollowTarget, player);
+
+		//lambda example
+		time_functions::delays::Delay<void>(sec, delayInSec, [delayInSec] { printf("This is a delay that waits %lld", delayInSec); });
+
+		//function with packed arguments
+		time_functions::delays::Delay<Demo, void>(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
 	}
 
 	void DelayStateChange(Agent* agentPtr, GameObject* Target, AgentStates newState, long long delay)

@@ -29,6 +29,7 @@ private:
 	olc::Sprite* rotationSprite;
 	olc::Decal*  rotationDecal;
 	bool beganPlay = false;
+	bool _drawGrid = true;
 
 	float initialCamSpeed = 0.0f;
 
@@ -54,6 +55,8 @@ public:
 	virtual bool OnBeginPlay() { return false; };
 	//Fires each frame after simulation starts
 	virtual bool OnTick() { return false; };
+
+	void SetCanDrawGrid(bool canDraw) { _drawGrid = canDraw; }
 
 protected:
 	unsigned int GetCurrentFrame() { return Frame; }

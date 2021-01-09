@@ -127,7 +127,7 @@ bool PixelGameEditor::OnUpdate(float & fElapsedTime)
 {
 	Frame++;
 	Clear({ 35, 35, 35 });
-	DrawGrid();
+	if(_drawGrid) DrawGrid();
 	DrawGameObjects(fElapsedTime);
 	Collision::GetInstance()->Update();
 	return true;
@@ -685,14 +685,17 @@ void PixelGameEditor::UpdateDebugText()
 	{
 		int id = i->GetID();
 		tempText = std::to_string(pos) + ". " + i->GetName() + " (Id:" + std::to_string(id) + ")";
+		float _textLenTemp = (float)(tempText.length()) * 8.0f; // Button length
 	
-		WorldWindow->AddText({ 0.0f, 0.0f }, tempText)->SetAnchor(PixelWindow::AnchorOptions::TopLeft);	
+		//WorldWindow->AddText({ 0.0f, 0.0f }, tempText)->SetAnchor(PixelWindow::AnchorOptions::TopLeft);	
 
-		std::function<void()>t2 = [this, i](){ SelectedGameObject = i; CenterCamera(); };
+		//std::function<void()>t2 = [this, i](){ SelectedGameObject = i; CenterCamera(); };
 		//class []lambda void()->void = &([this, i]() { SelectedGameObject = i; CenterCamera(); });
 
-		WorldWindow->AddButton<PixelGameEditor>(this, [this, i]() { SelectedGameObject = i; CenterCamera(); }, { 0.0f, 0.0f }, { 50.0f, 10.0f }, "Focus", olc::GREY)->SetAnchor(PixelWindow::AnchorOptions::TopLeft);
-	
+		auto tempButton = WorldWindow->AddButton<PixelGameEditor>(this, [this, i]() { SelectedGameObject = i; CenterCamera(); }, { 0.0f, 0.0f }, { _textLenTemp, 10.0f }, tempText, WorldWindow->GetBackgroundColor());
+		tempButton->SetAnchor(PixelWindow::AnchorOptions::TopLeft);
+		tempButton->SetTextColor(olc::WHITE);
+
 		pos++;
 	}
 	//########### World Window END ###########//

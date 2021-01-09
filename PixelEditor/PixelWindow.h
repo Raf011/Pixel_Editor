@@ -647,6 +647,8 @@ public:
 	void ResetAnchorValues();
 	PixelMath::Vec2D GetSize()		{ return pw_size; }
 	PixelMath::Vec2D GetPosition() { return pw_position; }
+	olc::Pixel GetBackgroundColor() { olc::Pixel tempCol = pw_back_color; return tempCol; }
+	void SetBackgroundColor(olc::Pixel newColor) { pw_back_color = newColor; }
 	void DisableDragging(bool disableDrag) { LockDragging = disableDrag; }
 	void CanBeResized(bool canResize) { bCanResize = canResize; }
 	void ForceAddScrollBar() { ForceAScrollBar = true; }

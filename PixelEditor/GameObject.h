@@ -105,6 +105,7 @@ public:
 	void SetCollisionSize(PixelMath::Vec2D Size);
 	bool CanCollide() { return b_CanCollide; }
 	void SetCollisionEnabled(bool flag);
+	void SetCanBeDetroyed(bool flag) { canBeDestroyed = flag; };
 	float GetRotation() { return transform.fRotation; }
 	void SetRotation(float rotation) { transform.fRotation = rotation; }
 	float GetRotationBasedOnAngle(float angle) { return angle * 0.0175f; }
@@ -127,6 +128,7 @@ public:
 	void ChangeSprite(std::string newSpritePath, float spriteRotation = 0.0f, bool animate = false, float animSpeed_ms = 0.0f);
 	void SetSpriteRotation(float newRotationOffset);
 	void SetSpriteSizeToObjectSize();
+	bool GetCanBeDestroyed() { bool temp = canBeDestroyed; return temp; }
 
 	//Editor only flags
 	bool bAllowRMBEvents = true;
