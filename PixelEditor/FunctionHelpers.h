@@ -14,8 +14,8 @@ namespace time_functions
 	{
 		// Delay with arguments passed to function called
 		//example use: time::delays::Delay<DemoClass, void, std::string>(time::s, 5, this, &DemoClass::functionToCall, "Delay with arguments");
-		template <class objectType, class funcType, class arg>
-		void Delay(TimeType timeType, long long delay, objectType* object, funcType(objectType::*func)(arg), arg argument)
+		template <class ObjectType, class FunctionType, class arg>
+		void Delay(TimeType timeType, long long delay, ObjectType* object, FunctionType(ObjectType::*func)(arg), arg argument)
 		{
 			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -37,15 +37,14 @@ namespace time_functions
 
 				if (whenStarted + delay < now)
 				{
-					((*object).*(func))(argument);
-					return; // break from the loop
+					return ((*object).*(func))(argument);
 				}
 			}
 		}
 
 		// Delay that takes a lambda func
-		template <class funcType>
-		void Delay(TimeType timeType, long long delay, std::function<funcType()>lambdaFuncToCall)
+		template <class FunctionType>
+		void Delay(TimeType timeType, long long delay, std::function<FunctionType()>lambdaFuncToCall)
 		{
 			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -75,7 +74,7 @@ namespace time_functions
 
 		// Delay that takes a func ptr with argument pack
 		template <class ObjectType, class FunctionType, typename ...ArgType, typename ...Args>
-		void Delay(TimeType timeType, long long delay, ObjectType* obj, FunctionType(ObjectType::*func)(ArgType... type), Args... args)
+		FunctionType Delay(TimeType timeType, long long delay, ObjectType* obj, FunctionType(ObjectType::*func)(ArgType... type), Args... args)
 		{
 			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -97,15 +96,14 @@ namespace time_functions
 
 				if (whenStarted + delay < now)
 				{
-					((*obj).*(func))(&args...);
-					return; // break from the loop
+					return ((*obj).*(func))(&args...);
 				}
 			}
 		}
 
 		// Delay without arguments in function called
-		template <class objectType, class funcType>
-		void Delay(TimeType timeType, long long delay, objectType* object, funcType(objectType::*func)())
+		template <class ObjectType, class FunctionType>
+		void Delay(TimeType timeType, long long delay, ObjectType* object, FunctionType(ObjectType::*func)())
 		{
 			auto m_StartTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -127,8 +125,7 @@ namespace time_functions
 
 				if (whenStarted + delay < now)
 				{
-					((*object).*(func))();
-					return;
+					return ((*object).*(func))();
 				}
 			}
 		}

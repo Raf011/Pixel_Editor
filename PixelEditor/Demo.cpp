@@ -168,7 +168,7 @@ public:
 		//box2dTestObject->Physics_ChangeDensity(0.02f);
 	}
 
-	void FUNCTYPETEST(const char** txt, int *number) { printf("\n #THIS IS A FUNC PTR TEST - %s \" = %i \"# \n", *txt, *number); }
+	int FUNCTYPETEST(const char** txt, int* number) { printf("\n #THIS IS A FUNC PTR TEST - %s \" = %i \"# \n", *txt, *number); return *number; }
 
 	void DelayTest(long long delayInSec = 5) // To be used in thread
 	{
@@ -176,10 +176,12 @@ public:
 		time_functions::delays::Delay<Agent, void, GameObject*>(time_functions::s, delayInSec, agent, &Agent::FollowTarget, player);
 
 		//lambda example
-		time_functions::delays::Delay<void>(sec, delayInSec, [delayInSec] { printf("This is a delay that waits %lld", delayInSec); });
+		time_functions::delays::Delay<void>(sec, delayInSec, [delayInSec] { printf("This is a delay that waits %lld sec", delayInSec); });
 
 		//function with packed arguments
-		time_functions::delays::Delay<Demo, void>(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
+		int a = time_functions::delays::Delay(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
+		printf("a = %i", a);
+		//time_functions::delays::Delay<Demo, void>(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
 	}
 
 	void DelayStateChange(Agent* agentPtr, GameObject* Target, AgentStates newState, long long delay)
