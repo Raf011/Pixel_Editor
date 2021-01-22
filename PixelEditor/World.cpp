@@ -29,9 +29,10 @@ World * World::Get()
 	return &instance;
 }
 
-void World::Init(olc::PixelGameEngine * engineRef)
+void World::Init(olc::PixelGameEngine* enginePtr, Grid* gridPtr)
 {
-	PGE = engineRef;
+	PGE = enginePtr;
+	_Grid = gridPtr;
 
 	InitPhysics();
 }

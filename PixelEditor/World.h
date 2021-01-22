@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include <vector>
 #include "box2d/box2d.h"
+#include "Grid.h"
 
 #ifndef GameWorld
 #define GameWorld World::Get()
@@ -24,6 +25,7 @@ private:
 	~World();
 	olc::PixelGameEngine* PGE = nullptr;
 	Camera2D* Camera = nullptr;
+	Grid* _Grid = nullptr;
 	std::vector<GameObject*> ListOfGameObjects;
 	bool mouseDragDisabled = false;
 	bool b_simulating = false;
@@ -37,7 +39,7 @@ private:
 
 public:
 	static World* Get();
-	void Init(olc::PixelGameEngine* engineRef);
+	void Init(olc::PixelGameEngine* enginePtr, Grid* gridPtr);
 	void AddMainCamera(Camera2D* CCamera);
 	Camera2D* GetMainCamera();
 	olc::PixelGameEngine* GetEngine();
@@ -52,6 +54,7 @@ public:
 	int debug_retunNextAvailableID() { return NextAvailableUniqueID; }
 	PixelMath::Vec2D GetPointInWorld(PixelMath::Vec2D point);
 	GameObject* GetObjectByIndex(int index);
+	Grid* GetGrid() { return _Grid; }
 
 	b2World* GetPhysicsWorld() { return  box_World; }
 	void SetGravity(float x, float y) { box_gravity->Set(x, y); }

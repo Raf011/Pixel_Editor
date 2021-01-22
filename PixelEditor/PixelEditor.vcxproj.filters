@@ -63,6 +63,9 @@
     <ClInclude Include="TestEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

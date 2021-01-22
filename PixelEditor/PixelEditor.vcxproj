@@ -140,6 +140,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="olcPixelGameEngine.h" />
+    <ClInclude Include="PathFinding.h" />
     <ClInclude Include="PixelGameEditor.h" />
     <ClInclude Include="PixelMath.h" />
     <ClInclude Include="PixelWindow.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="EditableBlock.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="PathFinding.cpp" />
     <ClCompile Include="PixelGameEditor.cpp" />
     <ClCompile Include="PixelWindow.cpp" />
     <ClCompile Include="Player.cpp" />
