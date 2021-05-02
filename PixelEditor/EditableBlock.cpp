@@ -60,15 +60,15 @@ void EditableBlock::OnEditorUpdate(float& fElapsedTime)
 	if(bSeparatorActive)
 		SplitLineFunctionality();
 
-	if(engine->GetKey(olc::Key::T).bPressed)
-		AddNewBlock({ 100.0f, 0 }, { 32, 32 });
-
 	if (engine->GetKey(olc::Key::ENTER).bPressed && !blocksOptimized)
 		optimizeBlocks();
 
 	// prevent dragging and resizing at the same time.
 	if(isBeingResized)
 		GameWorld->setMouseDragDisabled(true);
+
+	if (blocks.empty())
+		GameWorld->DestroyGameObject(this);
 
 
 	//////// DEBUG ONLY ////////
@@ -495,6 +495,11 @@ EditableBlock::Block::Block(PixelMath::Vec2D vPosition, PixelMath::Vec2D vSize, 
 	//bAllowDragging = false;
 }
 
+EditableBlock::Block::~Block()
+{
+	RemoveHandles();
+}
+
 void EditableBlock::Block::RefreshHandles()
 {
 	for (Handle* h : handles)
@@ -726,8 +731,8 @@ void EditableBlock::Block::HandleFunctionality()
 					PixelMath::Vec2D offset = vOldSize;
 					offset = newSize - offset;
 
-					int width = newSize.X;
-					int height = newSize.Y;
+					float width = newSize.X;
+					float height = newSize.Y;
 					PixelMath::Vec2D DrawPos;// = transform.PositionOffset - (transform.OffsetSize / 2.0f);
 					DrawPos = newPos - (transform.Size / 2.0f);
 

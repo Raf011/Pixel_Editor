@@ -19,6 +19,7 @@ Agent::Agent() : GameObject({ 0, 0 }, { 64, 64 }, "..//PixelEditor//Sprites//Age
 	SetRotation(0.0f);
 	Name = "Agent";
 	//faceOption = Face_MoveDirection;
+	//GameWorld->GetObjectByIndex(0)->GetPosition()
 }
 
 
@@ -28,7 +29,6 @@ Agent::~Agent()
 
 void Agent::OnBeginPlay()
 {
-	//target = { 900.0f, 900.0f };
 	//bShowDebug = bDrawTasksFullDebug;
 }
 
@@ -42,6 +42,9 @@ void Agent::Update(float &fElapsedTime)
 		//force = Seek(target);
 		//force = Flee(target);
 		//force = Pursuit(target);
+
+		if(CAN_TEST_PATH)
+			TestPath(true);
 
 		SetForceBasedOnState(fElapsedTime);
 
@@ -82,6 +85,8 @@ void Agent::Update(float &fElapsedTime)
 		Heading = velocity;
 		acceleration.ZeroOut();
 		force.ZeroOut();
+
+		OnAgentUpdate();
 	}
 }
 
@@ -252,6 +257,63 @@ void Agent::FleeTarget(GameObject *Target)
 		//currentMoveState = MoveState::eNone;
 }
 
+inline void Agent::TestPath(bool useGridVersion)
+{
+	auto TargetPos = GameWorld->GetObjectByIndex(0)->GetPosition() + PixelMath::Vec2D(0.0F, 10.0F);
+
+	if(useGridVersion)
+	{
+		//a.X += 100.0F;
+		auto path = PF->FindPath_Grid(GetPosition(), TargetPos);
+		//path.at(0)
+
+		if (path.size() > 0)
+		{
+			Grid::Node* previous = nullptr;
+			//float NodeSizeHalved = GameWorld->GetGrid()->GetNodeSize() / 2.0F;
+			float NodeSizeHalved = 0;
+			for (auto node : path)
+			{
+				if (previous)
+				{
+					auto pVec = GameWorld->GetPointInWorld(previous->GetPosition() + NodeSizeHalved);
+					auto cVec = GameWorld->GetPointInWorld(node->GetPosition() + NodeSizeHalved);
+					engine->DrawLine((int32_t)(pVec.X), (int32_t)pVec.Y, (int32_t)cVec.X, (int32_t)cVec.Y, olc::GREEN);
+				}
+
+				previous = node;
+			}
+
+			//engine->DrawString(500, 500, "Last node = " + path.at(path.size() - 1)->GetPosition().AsString(), olc::YELLOW, 2);
+			//engine->DrawString(500, 550, "Target = " + TargetPos.AsString(), olc::YELLOW, 2);
+		}
+	}
+
+	else
+	{
+		auto path = PF->FindPath_Vec(GetPosition(), TargetPos);
+		path.at(0) = GetPosition();
+		path.at(path.size() - 1) = TargetPos;
+
+		if (path.size() > 0)
+		{
+			PixelMath::Vec2D previous;
+			float NodeSizeHalved = 0;
+			for (auto node : path)
+			{
+				if (node != GetPosition())
+				{
+					auto pVec = GameWorld->GetPointInWorld(previous);
+					auto cVec = GameWorld->GetPointInWorld(node);
+					engine->DrawLine((int32_t)(pVec.X), (int32_t)pVec.Y, (int32_t)cVec.X, (int32_t)cVec.Y, olc::GREEN);
+				}
+
+				previous = node;
+			}
+		}
+	}
+}
+
 float Agent::GetDistanceToTarget()
 {
 	return PixelMath::Functions::Mag(target - transform.Position);
@@ -277,7 +339,7 @@ void Agent::DrawDirectionalVectors()
 	engine->DrawLine(StartX, StartY, EndX, EndY, olc::YELLOW);
 
 	float angle = GetRotatonToFaceTarget(transform.Position, target) - GetRotationBasedOnAngle(-90.0f);
-	int angleInDegrees = std::floor(ConvertAngleToDegrees(angle));
+	int angleInDegrees = (int)std::floor(ConvertAngleToDegrees(angle));
 	engine->DrawString(10, GetNextDebugLine(), "Angle = " + std::to_string(angle) + " (" + std::to_string(angleInDegrees) + " degrees)", olc::YELLOW);
 }
 

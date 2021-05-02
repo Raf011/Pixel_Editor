@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Agent.h"
+#include "Enemy.h"
 #include "Collision.h"
 #include "EditableBlock.h"
 #include "TestEntity.h"
@@ -17,12 +18,15 @@
 #define collisionManager Collision::GetInstance()
 #define zombieSprite "..//PixelEditor//Sprites//Zombie.png"
 
+//#define stateChange
+
 #define sec time_functions::s
 
 class Demo : public PixelGameEditor
 {
 	GameObject* player = new Player();
 	Agent* agent = new Agent();
+	Enemy* enemy = new Enemy();
 	GameObject* editableBlock = new EditableBlock({ 925.f, 75.f });
 	GameObject* testEntity = new TestEntity();
 
@@ -31,10 +35,12 @@ class Demo : public PixelGameEditor
 	GameObject* box2dTestObject3 = new GameObject({ 51.0f, -500.0f }, { 50.0f, 50.0f }, "..//PixelEditor//Sprites//Box.png");
 	GameObject* FloorBlock = new GameObject({ 500.0f, 1005.0f }, { 1000.0f, 10.0f }, "..//PixelEditor//Sprites//Box.png");
 
+	Enemy* enemy2 = new Enemy();
+
 public:
 	int i_FRAME = 0;
 
-	enum AgentStates
+	enum AgentStates : unsigned char
 	{
 		Flee, Follow, GoTo
 	};
@@ -86,6 +92,22 @@ public:
 		FloorBlock->bAllowDragging = false;
 		FloorBlock->bAllowEditorRotation = false;
 
+		//GameWorld->GetGrid()->LoadATileMap("..//PixelEditor//Sprites//Background.png", { 0.0F, 0.0F });
+		//GameWorld->GetGrid()->LoadATileMap("..//PixelEditor//Sprites//Background2.png", { 2000.0F, 0.0F });
+		//GameWorld->GetGrid()->LoadATileMap("..//PixelEditor//Sprites//Background.png", { 0.0F, 1000.0F });
+		setCanDrawTileMap(false);
+
+		enemy->SetPosition(agent->GetPosition());
+		enemy2->SetPosition(agent->GetPosition());
+
+		//[0, -1]
+		//[1,  0]
+
+		float x = enemy2->GetPosition().X * 0.0f + enemy2->GetPosition().Y * -1.0f;
+		float y = enemy2->GetPosition().X * 1.0f + enemy2->GetPosition().Y *  0.0f;
+
+		enemy2->SetPosition(x, y);
+
 		return true;
 	}
 
@@ -110,6 +132,9 @@ public:
 
 		i_FRAME++;
 
+		DrawString(5, 780, "Elapsed Time: " + std::to_string(fElapsedTime), olc::WHITE);
+		DrawString(5, 790, "Frame: " + std::to_string(i_FRAME), olc::WHITE);
+
 		//time_functions::delays::Delay(time_functions::s, 5);
 		//time_functions::delays::Delay<Demo, void>(time_functions::s, 5, this, &Demo::test);
 		//time_functions::delays::Delay<Demo, void, std::string>(time_functions::s, 5, this, &Demo::test2, "Delay with arguments");
@@ -121,6 +146,9 @@ public:
 
 		if (GetKey(olc::Key::O).bPressed)
 			DebugSpawnAgent();
+
+		if (GetKey(olc::Key::HOME).bPressed && !GameWorld->isSimulating())
+			SetCanDrawGrid(!canDrawGrid());
 
 		return true;
 	}
@@ -136,7 +164,7 @@ public:
 		//std::thread([this] {DelayTest(10); }).detach(); //also works (version 2)
 		//std::thread([this] { time_functions::delays::Delay<Agent, void, GameObject*>(time_functions::s, 10, agent, &Agent::FollowTarget, player); }).detach(); //also works (version 3)
 
-		GameWorld->DestroyGameObject(testEntity);
+		//GameWorld->DestroyGameObject(testEntity);
 		SetCanDrawGrid(false);
 
 		return true;
@@ -172,8 +200,10 @@ public:
 
 	void DelayTest(long long delayInSec = 5) // To be used in thread
 	{
+#ifdef stateChange
 		//func ptr that takes one argument
 		time_functions::delays::Delay<Agent, void, GameObject*>(time_functions::s, delayInSec, agent, &Agent::FollowTarget, player);
+#endif // stateChange
 
 		//lambda example
 		time_functions::delays::Delay<void>(sec, delayInSec, [delayInSec] { printf("This is a delay that waits %lld sec", delayInSec); });
@@ -181,7 +211,6 @@ public:
 		//function with packed arguments
 		int a = time_functions::delays::Delay(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
 		printf("a = %i", a);
-		//time_functions::delays::Delay<Demo, void>(sec, delayInSec, this, &Demo::FUNCTYPETEST, "HELLO", 11);
 	}
 
 	void DelayStateChange(Agent* agentPtr, GameObject* Target, AgentStates newState, long long delay)

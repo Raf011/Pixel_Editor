@@ -87,6 +87,17 @@ GameObject* World::GetObjectByIndex(int index)
 	return ListOfGameObjects[index];
 }
 
+GameObject* World::GetObjectByName(std::string name)
+{
+	for(GameObject* obj : ListOfGameObjects)
+	{
+		if (obj->GetName() == name)
+			return obj;
+	}
+
+	return nullptr;
+}
+
 PixelMath::Vec2D World::GetPointInWorld(PixelMath::Vec2D point)
 {
 	point.X = (point.X - mainCam->GetPosition().X) * mainCam->GetZoom();

@@ -69,9 +69,9 @@ void Collision::Update()
 {
 	if (ActorsInGame.size() > 1)
 	{
-		for (int i = 0; i < ActorsInGame.size(); i++)
+		for (unsigned int i = 0; i < ActorsInGame.size(); i++)
 		{
-			for (int i2 = (i + 1); i2 < ActorsInGame.size(); i2++)
+			for (unsigned int i2 = (i + 1); i2 < ActorsInGame.size(); i2++)
 			{
 				if (
 					((ActorsInGame.at(i)->GetColliderPosition().X + ActorsInGame.at(i)->GetCollisionSize().X) >= (ActorsInGame.at(i2)->GetColliderPosition().X)) &&

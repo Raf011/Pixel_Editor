@@ -17,9 +17,9 @@ void Grid::SetNeighbours()
 		for (int row = 0; row < GridTotalCellCount.X; row++)
 		{
 			Node* node = &Grid2D[column][row];
-			
+
 			//  Left
-			if(node->Position.X > 0)
+			if (node->Position.X > 0)
 				node->neighbours.Left = GetNodeAt((int)node->Position.X - NodeSize, (int)node->Position.Y);
 
 			//  Right
@@ -58,6 +58,9 @@ bool Grid::GridInit()
 		for (int row = 0; row < GridTotalCellCount.X; row++)
 		{
 			Grid2D[column][row].Position = { (float)row * NodeSize, (float)column * NodeSize };
+			Grid2D[column][row]._decal = new olc::Decal(new olc::Sprite("..//PixelEditor//Sprites//Tile.png"));
+			//Grid2D[column][row]._decal->sprite->width = 45;
+			//Grid2D[column][row]._decal->sprite->height = 45;
 		}
 
 	// Calculate the size of the grid
@@ -69,7 +72,7 @@ bool Grid::GridInit()
 	return true;
 }
 
-Grid::Node * Grid::GetNodeAt(PixelMath::Vec2D Location)
+Grid::Node* Grid::GetNodeAt(PixelMath::Vec2D Location)
 {
 	// Lower than 0 check
 	if (Location.X < 0) Location.X = 0;
@@ -81,7 +84,7 @@ Grid::Node * Grid::GetNodeAt(PixelMath::Vec2D Location)
 	x = x - (x % (int)NodeSize); // Get closest grid cell
 	y = y - (y % (int)NodeSize); // Get closest grid cell
 
-	// if x or y is outside the grid, set its value to the last collumn/row
+	// if x or y is outside the grid, set its value to the last column/row
 	if (x > GridSize.X) x = GridSize.X - NodeSize; // TODO - print warning
 	if (y > GridSize.Y) y = GridSize.Y - NodeSize; // TODO - print warning
 
@@ -91,7 +94,7 @@ Grid::Node * Grid::GetNodeAt(PixelMath::Vec2D Location)
 	return &Grid2D[predictedRow][predictedCollumn];
 }
 
-Grid::Node * Grid::GetNodeAt(int x, int y)
+Grid::Node* Grid::GetNodeAt(int x, int y)
 {
 	// Lower than 0 check
 	if (x < 0) x = 0;
@@ -120,11 +123,22 @@ std::vector<Grid::Node*> Grid::GetNodesInTheArea(PixelMath::Vec2D AreaLocation, 
 	int modY = (float)((int)AreaLocation.Y % (int)nodeSize);
 	AreaLocation.X -= modX;
 	AreaLocation.Y -= modY;
-	AreaSize.X += modX;
-	AreaSize.Y += modY;
+	//AreaSize.X += modX;
+	//AreaSize.Y += modY;
+
+	if (AreaLocation.X < 0.0F) AreaLocation.X = 0.0F;
+	if (AreaLocation.Y < 0.0F) AreaLocation.Y = 0.0F;
+
+	//don't go over the last node on X
+	if (AreaLocation.X + AreaSize.X > GridSize.X - nodeSize)
+		AreaSize.X = GridSize.X - nodeSize - AreaLocation.X;
+
+	//don't go over the last node on Y
+	if (AreaLocation.Y + AreaSize.Y > GridSize.Y - nodeSize)
+		AreaSize.Y = GridSize.Y - nodeSize - AreaLocation.Y;
 
 	//Find grid cells/nodes in the area
-	for(float x = AreaLocation.X; x < AreaLocation.X + AreaSize.X; x += nodeSize)
+	for (float x = AreaLocation.X; x < AreaLocation.X + AreaSize.X; x += nodeSize)
 	{
 		for (float y = AreaLocation.Y; y < AreaLocation.Y + AreaSize.Y; y += nodeSize)
 		{
@@ -142,12 +156,12 @@ std::vector<Grid::Node*> Grid::GetNodesInTheArea(PixelMath::Vec2D AreaLocation, 
 
 void Grid::UpdateGrid()
 {
-	if(GameWorld && mainCam)
+	if (GameWorld && mainCam)
 	{
 		UpdateOffsetPosition();
 
 		//clear previously occupied nodes as we will recalculate this again.
-		if(!OccupiedNodes.empty())
+		if (!OccupiedNodes.empty())
 		{
 			for (Node* occupiedNode : OccupiedNodes)
 				occupiedNode->Occupied = false;
@@ -155,10 +169,10 @@ void Grid::UpdateGrid()
 			OccupiedNodes.clear();
 		}
 
-		for(GameObject* actor : GameWorld->GetGameObjectsSpawnedInTheWorld())
+		for (GameObject* actor : GameWorld->GetGameObjectsSpawnedInTheWorld())
 		{
 			// test what nodes actor occupies only if its collision is enabled
-			if(actor->CanCollide())
+			if (actor->CanCollide())
 			{
 				//Get nodes at the locations occupied by one entity
 				std::vector<Node*> nodes = GetNodesInTheArea(actor->GetWorldTransform().PositionFromTopLeftCorner, actor->GetWorldTransform().Size);
@@ -172,12 +186,17 @@ void Grid::UpdateGrid()
 				/////////////////////////////////////////////////////////////////////
 
 				//add nodes to the list of occupied node list
-				if(!nodes.empty())
+				if (!nodes.empty())
 				{
-					for(Node* node : nodes )
+					for(Node* node : nodes)
+						if(!node->vecOccupiedBy.empty())
+							node->vecOccupiedBy.clear(); // clear entities that occupy this grid cell
+
+					for (Node* node : nodes)
 					{
 						node->Occupied = true;
-						OccupiedNodes.emplace_back(node);
+						node->vecOccupiedBy.push_back(actor);
+						OccupiedNodes.push_back(node);
 
 						////////////////////////////////DEBUG////////////////////////////////
 						//int tx = node->GetPosition().X;
@@ -190,14 +209,15 @@ void Grid::UpdateGrid()
 			}
 		}
 
-		for (auto i : OccupiedNodes)
-			engine->DrawRect((int)i->GetPositionOffset().X, (int)i->GetPositionOffset().Y, NodeSizeOffset, NodeSizeOffset, olc::RED);
+		if(_bHighlightOccupiedCells)
+			for (auto i : OccupiedNodes)
+				engine->DrawRect(i->GetPositionOffset().X, i->GetPositionOffset().Y, NodeSizeOffset, NodeSizeOffset, olc::RED);
 	}
 }
 
 void Grid::UpdateOffsetPosition()
 {
-	if(bCanUpdateOffsiedPosition)
+	if (bCanUpdateOffsetPosition)
 	{
 		//add this only once
 		if (DebugAllNodes.empty())
@@ -216,9 +236,39 @@ void Grid::UpdateOffsetPosition()
 				testedNode->PositionOffset = (testedNode->Position - mainCam->GetPosition()) * mainCam->GetZoom();
 
 				//add this only once
-				if(DebugAllNodes.empty())
+				if (DebugAllNodes.empty())
 					DebugAllNodes.emplace_back(testedNode);
 			}
+	}
+}
+
+void Grid::LoadATileMap(std::string imagePath, PixelMath::Vec2D gridNodeOrigin)
+{
+	olc::Sprite sceneTemp;
+	sceneTemp.LoadFromFile(imagePath);
+	auto nodesTemp = GetNodesInTheArea(gridNodeOrigin, { (float)sceneTemp.width, (float)sceneTemp.height });
+	int nodeSizeXY = (int)GetNodeSize() + 1;
+
+	for (auto gridCell : nodesTemp)
+	{
+		// Y axis
+		for(int Y = 0; Y < nodeSizeXY; ++Y)
+		{
+			// X axis
+			for( int X = 0; X < nodeSizeXY; ++X )
+			{
+				//Get X and Y position of the grid cell
+				int PosX = (int)gridCell->Position.X - gridNodeOrigin.X;
+				int PosY = (int)gridCell->Position.Y - gridNodeOrigin.Y;
+
+				//load pixel from that position 
+				olc::Pixel P = sceneTemp.GetPixel(PosX + X, PosY + Y);
+			
+				//get tiles/grid nodes in the area from the origin to the scene/sprite size and set there sprites;
+				gridCell->GetDecal()->sprite->SetPixel(X, Y, P);
+				gridCell->GetDecal()->Update();
+			}
+		}
 	}
 }
 
@@ -228,9 +278,16 @@ Grid::Node::Node()
 
 Grid::Node::~Node()
 {
+	if (_decal)
+	{
+		if (_decal->sprite)
+			delete _decal->sprite;
+
+		delete _decal;
+	}
 }
 
-//Crash on corner?? 
+//Crash on bottom corners?? 
 PixelMath::Vec2D Grid::Node::GetPosition()
 {
 	return Position;
@@ -244,4 +301,21 @@ PixelMath::Vec2D Grid::Node::GetPositionOffset()
 Grid::Node::Neighbours Grid::Node::GetNeighbours()
 {
 	return neighbours;
+}
+
+std::vector<Grid::Node*> Grid::Node::GetNeighboursInVec()
+{
+	std::vector<Grid::Node*> NeighboursVec;
+	if (neighbours.Top) NeighboursVec.push_back(neighbours.Top);
+	if (neighbours.TopLeft) NeighboursVec.push_back(neighbours.TopLeft);
+	if (neighbours.TopRight) NeighboursVec.push_back(neighbours.TopRight);
+
+	if (neighbours.Left) NeighboursVec.push_back(neighbours.Left);
+	if (neighbours.Right) NeighboursVec.push_back(neighbours.Right);
+
+	if (neighbours.Bottom) NeighboursVec.push_back(neighbours.Bottom);
+	if (neighbours.BottomRight) NeighboursVec.push_back(neighbours.BottomRight);
+	if (neighbours.BottomLeft) NeighboursVec.push_back(neighbours.BottomLeft);
+
+	return NeighboursVec;
 }

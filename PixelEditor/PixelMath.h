@@ -11,6 +11,9 @@ namespace PixelMath
 {
 	struct Vec2D
 	{
+		Vec2D() { X = 0.0f; Y = 0.0f; }
+		Vec2D(float x, float y) : X(x), Y(y){}
+
 		float X;
 		float Y;
 
@@ -133,6 +136,22 @@ namespace PixelMath
 		//return Vec2D{ a.X + b.X, a.Y + b.Y };
 		return a;
 	}
+
+	//static Vec2D operator * (Vec2D a, float b)
+	//{
+	//	a.X *= b;
+	//	a.Y *= b;
+	//
+	//	return a;
+	//}
+	//
+	//static Vec2D operator * (float b, Vec2D a)
+	//{
+	//	a.X *= b;
+	//	a.Y *= b;
+	//
+	//	return a;
+	//}
 
 	static Vec2D operator *= (Vec2D& a, Vec2D& b)
 	{

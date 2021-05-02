@@ -54,6 +54,7 @@ public:
 	int debug_retunNextAvailableID() { return NextAvailableUniqueID; }
 	PixelMath::Vec2D GetPointInWorld(PixelMath::Vec2D point);
 	GameObject* GetObjectByIndex(int index);
+	GameObject* GetObjectByName(std::string name);
 	Grid* GetGrid() { return _Grid; }
 
 	b2World* GetPhysicsWorld() { return  box_World; }

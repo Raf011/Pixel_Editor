@@ -11,8 +11,8 @@ private:
 	std::vector<GameObject*> ActorsInGame;
 	int FindIndexOfAnActor(GameObject* ActorToFind);
 	bool DoesObjectExistInTheList(GameObject* ActorToCheck);
-	GameObject *GO1;
-	GameObject *GO2;
+	GameObject *GO1 = nullptr;
+	GameObject *GO2 = nullptr;
 
 public:
 	~Collision();

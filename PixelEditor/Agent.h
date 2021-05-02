@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "PathFinding.h"
 
 
 class Agent : public GameObject
@@ -18,6 +19,9 @@ private:
 	int8_t nextDebugLine = 5;
 	uint8_t moveState{ 0b0000'0000 };
 	uint8_t faceOption{ 0b0000'0000 };
+
+	PathFinding* PF = new PathFinding();
+	//std::vector<Grid::Node*> path;
 
 	/*
 	enum MoveState
@@ -58,6 +62,9 @@ private:
 	void SetForceBasedOnState(float &ElapsedTime);
 	int32_t GetNextDebugLine() { nextDebugLine += 15; return nextDebugLine - 15; }
 
+	//For objects derived from the Agent class
+	virtual void OnAgentUpdate() {};
+
 public:
 	float GetDistanceToTarget();
 	void MoveTo(PixelMath::Vec2D Target);
@@ -65,5 +72,8 @@ public:
 	void FollowTarget(GameObject* Target);
 	void FleeTarget(GameObject* Target);
 	//void ShowDebug(bool debugOn) { bShowDebug = debugOn; }
+
+	inline void TestPath(bool useGridVersion);
+	bool CAN_TEST_PATH = true;
 };
 

@@ -6,6 +6,7 @@ Player::Player() : GameObject({ 500, 500 }, { 64, 64 }, "..//PixelEditor//Sprite
 {
 	playerCamera = GameWorld->GetMainCamera();
 	Name = "Player";
+	Health = std::numeric_limits<float>::max();
 	//fRotation = -1.5f;
 	//transform.fRotation = GetRotationBasedOnAngle(30);
 }
@@ -47,7 +48,7 @@ void Player::Update(float &fElapsedTime)
 	{		
 		PixelMath::Vec2D dir = { mouseX, mouseY };
 		PixelMath::Vec2D pos = { transform.Position.X + 15.0f, transform.Position.Y - 20.0f };
-		projectileManager->SpawnProjectile(this, pos, { 8.0f, 2.0f }, dir, 6.0f, 20.0f)->SetCanBounce(true);
+		projectileManager->SpawnProjectile(this, pos, { 8.0f, 2.0f }, dir, 6.0f, 20.0f)->SetCanBounce(false);
 	}
 
 	if (engine->GetKey(olc::Key::G).bPressed)

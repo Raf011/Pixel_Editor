@@ -81,9 +81,9 @@ bool PixelGameEditor::OnEditorTick(float & fElapsedTime)
 		WorldWindow->Update();
 		EditableBlockWindow->Update();
 		//////////
-
 		//UpdateGrid
-		grid2D->UpdateGrid();
+		//grid2D->UpdateGrid();
+
 	}
 
 	//Is Simulating
@@ -92,6 +92,8 @@ bool PixelGameEditor::OnEditorTick(float & fElapsedTime)
 		//On Simulate
 		if (!beganPlay)
 		{
+			if (grid2D) grid2D->HighlightOccupiedCells(false);
+
 			OnBeginPlay();
 			beganPlay = true;
 		}
@@ -107,8 +109,14 @@ bool PixelGameEditor::OnEditorTick(float & fElapsedTime)
 			UpdatePhysics(fElapsedTime);
 		}
 
+		if (GetKey(olc::Key::H).bPressed)
+			_drawTileMap = !_drawTileMap;
+
 		OnTick();
 	}
+
+	//UpdateGrid
+	grid2D->UpdateGrid();
 
 	return true;
 }
@@ -127,7 +135,8 @@ bool PixelGameEditor::OnUpdate(float & fElapsedTime)
 {
 	Frame++;
 	Clear({ 35, 35, 35 });
-	if(_drawGrid) DrawGrid();
+	if (_drawGrid)	DrawGrid();
+	if (_drawTileMap) DrawTileMap();
 	DrawGameObjects(fElapsedTime);
 	Collision::GetInstance()->Update();
 	return true;
@@ -354,7 +363,7 @@ void PixelGameEditor::TestGrid(float PosX, float PosY, bool DrawNeigbours)
 	OutlineGridNode(node, { 82, 229, 195 }, false);
 
 	if (node->isOccupied())
-		FillRect((int)node->GetPositionOffset().X, (int)node->GetPositionOffset().Y, 50 * mainCam->GetZoom(), 50 * mainCam->GetZoom(), olc::RED);
+		FillRect(node->GetPositionOffset().X, node->GetPositionOffset().Y, 50 * mainCam->GetZoom(), 50 * mainCam->GetZoom(), olc::RED);
 
 }
 
@@ -529,7 +538,7 @@ void PixelGameEditor::RMB_Events()
 
 				SetRMBButton( RMB_Event_Window->AddButton(this, &PixelGameEditor::RMB_Event_Button_ToggleCollision, { 0, 0 }, { 150, 20 }, "Draw Collision", { 23, 24, 25 }) );
 				SetRMBButton( RMB_Event_Window->AddButton(this, &PixelGameEditor::RMB_Event_Button_Reset, { 0, -9.0f }, { 150, 20 }, "Reset", { 23, 24, 25 }) );
-				SetRMBButton(RMB_Event_Window->AddButton(this, &PixelGameEditor::RMB_Event_Button_DestroyObject, { 0, -9.0f }, { 150, 20 }, "Delete", { 23, 24, 25 }));
+				SetRMBButton( RMB_Event_Window->AddButton(this, &PixelGameEditor::RMB_Event_Button_DestroyObject, { 0, -9.0f }, { 150, 20 }, "Delete", { 23, 24, 25 }));
 
 				break;
 			}
@@ -555,6 +564,21 @@ void PixelGameEditor::SetRMBButton(PixelWindow::Button<PixelGameEditor>* button)
 	button->SetAnchor(PixelWindow::AnchorOptions::TopLeft);
 	button->SetTextColor(olc::WHITE);
 	button->SetHoveredOverColor({ 204, 0, 78 });
+}
+
+void PixelGameEditor::DrawTileMap()
+{
+	auto PosOfTheCamera = mainCam->GetPosition();// +50.0F; //50.0F added for debug (offset from the camera to see where the tiles start drawing)
+	auto tiles = grid2D->GetNodesInTheArea({ PosOfTheCamera.X ,PosOfTheCamera.Y }, { 1100.0F, 800.0F });
+	olc::vf2d scale = { mainCam->GetZoom(), mainCam->GetZoom() };
+
+	for(auto tile : tiles)
+	{
+		if(tile->GetDecal())
+			DrawDecal({ tile->GetPositionOffset().X, tile->GetPositionOffset().Y }, tile->GetDecal(), scale);
+	}
+
+	tiles.clear();
 }
 
 void PixelGameEditor::SetPixelWindows()
@@ -625,7 +649,7 @@ void PixelGameEditor::SetPixelWindows()
 
 PixelGameEditor::PixelGameEditor()
 {
-	World::Get()->Init(this); 
+	World::Get()->Init(this, grid2D); 
 	World::Get()->AddMainCamera(new Camera2D());
 }
 
@@ -663,7 +687,7 @@ void PixelGameEditor::UpdateDebugText()
 	//...........Editable Block Window...........//
 	if (SelectedGameObject->GetTag() == "EditableBlock")
 	{		
-		EditableBlock* selectedBlock = dynamic_cast<EditableBlock*>(SelectedGameObject->GetParentObject());
+EditableBlock* selectedBlock = dynamic_cast<EditableBlock*>(SelectedGameObject->GetParentObject());
 		if(selectedBlock)
 		{
 			EditableBlockWindow->Show();

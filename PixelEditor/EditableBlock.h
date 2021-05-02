@@ -7,7 +7,6 @@ class EditableBlock : public GameObject
 public:
 	EditableBlock(PixelMath::Vec2D position);
 	~EditableBlock();
-
 	void drawDebugCells();
 
 	struct s_FacingDirection
@@ -18,12 +17,12 @@ public:
 		bool Down  = false;
 	};
 
-	enum e_FacingDirection
+	enum e_FacingDirection : unsigned char
 	{
 		Left, Right, Up, Down
 	};
 
-	enum e_CutDirection
+	enum e_CutDirection : unsigned char
 	{
 		X_Axis, Y_Axis
 	};
@@ -48,7 +47,6 @@ private:
 				dec = new olc::Decal(spr);
 				hDirection = h_direction;
 				offsetPosition = Owner->GetPosition() - vPosition;
-
 			}
 			~Handle() {};
 
@@ -106,16 +104,16 @@ private:
 			Block* Down = nullptr;
 		};
 
+//##################### BLOCK CLASS #####################//
 		friend class EditableBlock;
 	public:
 		Block(PixelMath::Vec2D vPosition, PixelMath::Vec2D vSize, EditableBlock* eb_parent);
-		~Block() {};
+		~Block();
 		EditableBlock* parent = nullptr;
 		void RefreshHandles();
 		void RemoveHandles();
 		void SetDirections(bool left, bool right, bool up, bool down);
 		void AddNeigbour(Block* neigbour, e_FacingDirection side);
-
 
 	private:
 		virtual void OnEditorUpdate(float &fElapsedTime) override;

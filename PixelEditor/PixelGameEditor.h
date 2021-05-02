@@ -30,6 +30,7 @@ private:
 	olc::Decal*  rotationDecal;
 	bool beganPlay = false;
 	bool _drawGrid = true;
+	bool _drawTileMap = true;
 
 	float initialCamSpeed = 0.0f;
 
@@ -57,6 +58,7 @@ public:
 	virtual bool OnTick() { return false; };
 
 	void SetCanDrawGrid(bool canDraw) { _drawGrid = canDraw; }
+	const bool canDrawGrid() { return _drawGrid; }
 
 protected:
 	unsigned int GetCurrentFrame() { return Frame; }
@@ -83,6 +85,8 @@ protected:
 	void TestGrid(float PosX, float PosY, bool DrawNeigbours);
 
 	void OutlineGridNode(Grid::Node* node, olc::Pixel color, bool DrawADot = true);
+
+	void setCanDrawTileMap(bool b) { _drawTileMap = b; }
 
 	bool isObjectDraggedByMouse = false;
 	GameObject* ObjectDraggedByMouse = nullptr;	
@@ -138,6 +142,8 @@ protected:
 	}
 
 private:
+	void DrawTileMap();
+
 	void SetPixelWindows();
 	bool b_RMB_Event_Active = false;
 	void RMB_Events();

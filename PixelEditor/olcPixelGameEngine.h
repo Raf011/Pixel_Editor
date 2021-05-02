@@ -612,6 +612,7 @@ namespace olc
 		bool Draw(const olc::vi2d& pos, Pixel p = olc::WHITE);
 		// Draws a line from (x1,y1) to (x2,y2)
 		void DrawLine(int32_t x1, int32_t y1, int32_t x2, int32_t y2, Pixel p = olc::WHITE, uint32_t pattern = 0xFFFFFFFF);
+		void DrawLine(float x1, float y1, float x2, float y2, Pixel p = olc::WHITE, uint32_t pattern = 0xFFFFFFFF);
 		void DrawLine(const olc::vi2d& pos1, const olc::vi2d& pos2, Pixel p = olc::WHITE, uint32_t pattern = 0xFFFFFFFF);
 		// Draws a circle located at (x,y) with radius
 		void DrawCircle(int32_t x, int32_t y, int32_t radius, Pixel p = olc::WHITE, uint8_t mask = 0xFF);
@@ -621,9 +622,11 @@ namespace olc
 		void FillCircle(const olc::vi2d& pos, int32_t radius, Pixel p = olc::WHITE);
 		// Draws a rectangle at (x,y) to (x+w,y+h)
 		void DrawRect(int32_t x, int32_t y, int32_t w, int32_t h, Pixel p = olc::WHITE);
+		void DrawRect(float x, float y, float w, float h, Pixel p = olc::WHITE);
 		void DrawRect(const olc::vi2d& pos, const olc::vi2d& size, Pixel p = olc::WHITE);
 		// Fills a rectangle at (x,y) to (x+w,y+h)
 		void FillRect(int32_t x, int32_t y, int32_t w, int32_t h, Pixel p = olc::WHITE);
+		void FillRect(float x, float y, float w, float h, Pixel p = olc::WHITE);
 		void FillRect(const olc::vi2d& pos, const olc::vi2d& size, Pixel p = olc::WHITE);
 		// Draws a triangle between points (x1,y1), (x2,y2) and (x3,y3)
 		void DrawTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, Pixel p = olc::WHITE);
@@ -642,7 +645,6 @@ namespace olc
 		void DrawDecal(const olc::vf2d& pos, olc::Decal *decal, const olc::vf2d& scale = { 1.0f,1.0f }, const olc::Pixel& tint = olc::WHITE);
 		// Draws a region of a decal, with optional scale and tinting
 		void DrawPartialDecal(const olc::vf2d& pos, olc::Decal* decal, const olc::vf2d& source_pos, const olc::vf2d& source_size, const olc::vf2d& scale = { 1.0f,1.0f }, const olc::Pixel& tint = olc::WHITE);
-		
 		void DrawWarpedDecal(olc::Decal* decal, const olc::vf2d(&pos)[4], const olc::Pixel& tint = olc::WHITE);
 		void DrawWarpedDecal(olc::Decal* decal, const olc::vf2d* pos, const olc::Pixel& tint = olc::WHITE);
 		void DrawWarpedDecal(olc::Decal* decal, const std::array<olc::vf2d, 4>& pos, const olc::Pixel& tint = olc::WHITE);
@@ -655,6 +657,7 @@ namespace olc
 		// Draws a single line of text
 		void DrawString(int32_t x, int32_t y, const std::string& sText, Pixel col = olc::WHITE, uint32_t scale = 1);
 		void DrawString(const olc::vi2d& pos, const std::string& sText, Pixel col = olc::WHITE, uint32_t scale = 1);
+		void DrawString(float x, float y, const std::string& sText, Pixel col = olc::WHITE, uint32_t scale = 1);
 		// Clears entire draw target to Pixel
 		void Clear(Pixel p);
 		// Clears the rendering back buffer
@@ -1381,6 +1384,9 @@ namespace olc
 		//vSubPixelOffset.y = oy * vPixel.y;
 	}
 
+	void PixelGameEngine::DrawLine(float x1, float y1, float x2, float y2, Pixel p, uint32_t pattern)
+	{ DrawLine((int32_t)x1, (int32_t)y1, (int32_t)x2, (int32_t)y2, p, pattern); }
+
 	void PixelGameEngine::DrawLine(const olc::vi2d& pos1, const olc::vi2d& pos2, Pixel p, uint32_t pattern)
 	{ DrawLine(pos1.x, pos1.y, pos2.x, pos2.y, p, pattern);	}
 
@@ -1512,6 +1518,14 @@ namespace olc
 	void PixelGameEngine::DrawRect(const olc::vi2d& pos, const olc::vi2d& size, Pixel p)
 	{ DrawRect(pos.x, pos.y, size.x, size.y, p); }
 
+	void PixelGameEngine::DrawRect(float x, float y, float w, float h, Pixel p)
+	{
+		DrawLine(x, y, x + w, y, p);
+		DrawLine(x + w, y, x + w, y + h, p);
+		DrawLine(x + w, y + h, x, y + h, p);
+		DrawLine(x, y + h, x, y, p);
+	}
+
 	void PixelGameEngine::DrawRect(int32_t x, int32_t y, int32_t w, int32_t h, Pixel p)
 	{
 		DrawLine(x, y, x+w, y, p);
@@ -1531,6 +1545,9 @@ namespace olc
 	{
 		renderer->ClearBuffer(p, bDepth);
 	}
+
+	void PixelGameEngine::FillRect(float x, float y, float w, float h, Pixel p)
+	{ FillRect((int32_t)x, (int32_t)y, (int32_t)w, (int32_t)h, p); }
 
 	void PixelGameEngine::FillRect(const olc::vi2d& pos, const olc::vi2d& size, Pixel p)
 	{ FillRect(pos.x, pos.y, size.x, size.y, p); }
@@ -1930,6 +1947,9 @@ namespace olc
 
 	void PixelGameEngine::DrawString(const olc::vi2d& pos, const std::string& sText, Pixel col, uint32_t scale)
 	{ DrawString(pos.x, pos.y, sText, col, scale); }
+
+	void PixelGameEngine::DrawString(float x, float y, const std::string & sText, Pixel col, uint32_t scale)
+	{ DrawString((int32_t)x, (int32_t)y, sText, col, scale); }
 
 	void PixelGameEngine::DrawString(int32_t x, int32_t y, const std::string& sText, Pixel col, uint32_t scale)
 	{
